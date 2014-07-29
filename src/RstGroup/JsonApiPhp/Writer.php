@@ -241,7 +241,7 @@ class Writer
 
         $document += $entity->toArray();
 
-        if ($this->attachDocumentLinks) {
+        if ($this->attachDocumentLinks && !empty($this->relations)) {
             $document['links'] = $this->renderLinks($entity);
         }
 
