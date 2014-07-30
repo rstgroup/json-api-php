@@ -34,12 +34,12 @@ class Writer
     /**
      * @var bool
      */
-    protected $attachTemplates = true;
+    protected $attachTemplates = false;
 
     /**
      * @var bool
      */
-    protected $attachLinked = true;
+    protected $attachLinked = false;
 
     /**
      * @var array
