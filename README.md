@@ -10,6 +10,49 @@ This document is not finished yet, it's only a draft for now.
 It's a light PHP library for creating json-api standard responses. If You want to know more about json-api standard, please see details at http://jsonapi.org.
 
 # Usage
+
+## Quick example
+```php
+<?php
+
+use RstGroup\JsonApiPhp\EntityInterface;
+use RstGroup\JsonApiPhp\Resource;
+use RstGroup\JsonApiPhp\Relation;
+use RstGroup\JsonApiPhp\Writer;
+
+// define posts resource
+$postsResource = new Resource();
+$postsResource->setCollectionName('posts');
+$postsResource->setName('post');
+$postsResource->setHref('/posts/{posts.id}');
+
+// create post entities
+$post1 = new Post(1, 'first post');
+$post2 = new Post(2, 'second awesome post');
+
+$postsResource->setEntities(array($post1, $post2));
+
+// render result
+$writer = new Writer();
+echo json_encode($writer->write($postsResource));
+
+```
+```json
+{"posts": [
+    {
+        "id": "1",
+        "href": "/posts/1",
+        "text": "first post"
+    },
+    {
+        "id": "2",
+        "href": "/posts/2",
+        "text": "second awesome post"
+    }
+]}
+```
+
+## Introduction
 As example we take two resources: "authors" and "posts".
 Author creates posts, so an author can have many posts, but every single post will be related with only one author.<br/>
 
