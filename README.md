@@ -87,7 +87,7 @@ So every resource should have defined three properties:
 * collection name
 * href
 
-First two of them are used by `Writer` for naming conventions specified in the standard documentation, last one is used to for preparing full link to concrete resource. `Name` stands for name of single document. `Collection name` stands for plural name of documents, while `href` should contain template url for single document. 
+First two of them are used by `Writer` for naming conventions specified in the standard documentation, last one is used to for preparing full link to concrete resource. `Name` stands for name of single entity. `Collection name` stands for plural name of resource entities, while `href` should contain template url for single resource entity. 
 
 Ok, now we know what kind of resources we have, what are their names, collection names, and links. You may have noticed that links are set as templates with placeholders, e.g. `{authors.id}`. A properly prepared placeholders are used by `Writer` to determine what value should be replaced with it (and for few other things too). It will be helpful with more complex links, for example `/authors/{authors.id}/posts/{posts.id}`. 
 
@@ -98,7 +98,6 @@ Ok, now we know what kind of resources we have, what are their names, collection
 Now it's time for entities.
 
 ## Defining entities
-Entities of concrete resource are `documents` within the meaning of json-api standard (see: http://jsonapi.org/format).<br/>
 The very first entity we would like to create is `Author`. As You can see below, `Author` class implements `EntityInterface`. It means that it should implement two methods: `getId()` and `toArray()`.<br/>
 Method `getId()` returns id of concrete entity and it's used at every place in library where that id should be known.<br/>
 
@@ -294,7 +293,7 @@ And the result is:
 ]}
 ```
 
-As You can see there are new fields in result: `links` in every post document.<br/>
+As You can see there are new fields in result: `links` in every post entity.<br/>
 Field `links` contains short info about author related with concrete post. It could be returned in two (three for one-to-many relation type) forms: as id only, and as an object (by default). You could change that by:
 
 ```php
@@ -412,7 +411,7 @@ So result looks like:
 ```
 
 ## Embedding related resources data
-As mentioned in previous section, adding relation to resource causes the appearance of new `links` field in every document on list. But, If You want to have embeded data of related resource in response representation You should fill up entity object with proper values, and turn on attaching `linked` objects to representation, cause it is disabled by default.
+As mentioned in previous section, adding relation to resource causes the appearance of new `links` field in every entity on list. But, If You want to have embeded data of related resource in response representation You should fill up entity object with proper values, and turn on attaching `linked` objects to representation, cause it is disabled by default.
 
 In our case filling up is already done as we've set all properties earlier via constructor:
 ```php
@@ -427,7 +426,7 @@ So only one thing left to do:
 $writer->setAttachLinked(true);
 ```
 
-And, as we can see, the top-level `linked` field contains documents with data of resources related with author resource:
+And, as we can see, the top-level `linked` field contains entities with data of resources related with author resource:
 ```json
 {"authors": [
     {
