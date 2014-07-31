@@ -1,0 +1,12 @@
+<phpunit bootstrap="bootstrap.php" backupStaticAttributes="false" backupGlobals="false" colors="true" convertErrorsToExceptions="true" convertNoticesToExceptions="true" convertWarningsToExceptions="true">
+    <testsuites>
+        <testsuite name="JsonApiPhp">
+            <directory>RstGroup/JsonApiPhp/Tests</directory>
+        </testsuite>
+    </testsuites>
+
+    <!--<logging>-->
+        <!--<log type="coverage-html" target="../../../unit_coverage" charset="UTF-8" yui="true" highlight="false" />-->
+    <!--</logging>-->
+
+</phpunit>

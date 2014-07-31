@@ -24,12 +24,12 @@ class Writer
     /**
      * @var bool
      */
-    protected $attachDocumentHref = true;
+    protected $attachResourceObjectHref = true;
 
     /**
      * @var bool
      */
-    protected $attachDocumentLinks = true;
+    protected $attachResourceObjectsLinks = true;
 
     /**
      * @var bool
@@ -85,9 +85,9 @@ class Writer
      * @param boolean $attach
      * @return $this
      */
-    public function setAttachDocumentHref($attach)
+    public function setAttachResourceObjectHref($attach)
     {
-        $this->attachDocumentHref = (bool) $attach;
+        $this->attachResourceObjectHref = (bool) $attach;
         return $this;
     }
 
@@ -105,9 +105,9 @@ class Writer
      * @param boolean $attach
      * @return $this
      */
-    public function setAttachDocumentLinks($attach)
+    public function setAttachResourceObjectsLinks($attach)
     {
-        $this->attachDocumentLinks = (bool) $attach;
+        $this->attachResourceObjectsLinks = (bool) $attach;
         return $this;
     }
 
@@ -140,7 +140,7 @@ class Writer
         $this->init($resource);
 
         $this->attachLinks();
-        $this->attachDocuments();
+        $this->attachResourceObjects();
         $this->attachLinked();
 
         return $this->normalizeResult();
@@ -187,17 +187,17 @@ class Writer
     }
 
     /**
-     * Attaches resource documents to result.
+     * Attaches resource entities to result.
      */
-    protected function attachDocuments()
+    protected function attachResourceObjects()
     {
         foreach ($this->entities as $entity) {
-            $this->result[$this->collectionName][] = $this->renderDocument($entity);
+            $this->result[$this->collectionName][] = $this->renderResourceObject($entity);
         }
     }
 
     /**
-     * Attaches linked documents to result.
+     * Attaches linked entities to result.
      */
     protected function attachLinked()
     {
@@ -218,38 +218,38 @@ class Writer
                     : array();
 
                 $subEntities = $this->getSubEntities($entity, $name);
-                $this->result['linked'][$collectionName] = $this->renderLinkedDocuments($linked, $entity, $subEntities, $relation);
+                $this->result['linked'][$collectionName] = $this->renderLinkedResourceObjects($linked, $entity, $subEntities, $relation);
             }
         }
     }
 
     /**
-     * Renders resource document.
+     * Renders resource object.
      * @param EntityInterface $entity
      * @return array
      */
-    protected function renderDocument(EntityInterface $entity)
+    protected function renderResourceObject(EntityInterface $entity)
     {
-        $document = array();
-        $document['id'] = (string) $entity->getId();
+        $resourceObject = array();
+        $resourceObject['id'] = (string) $entity->getId();
 
-        if ($this->attachDocumentHref) {
+        if ($this->attachResourceObjectHref) {
             $binds = array($this->collectionName => $entity->getId());
             $href = $this->prepareHref($this->href, $binds);
-            $document['href'] = $href;
+            $resourceObject['href'] = $href;
         }
 
-        $document += $entity->toArray();
+        $resourceObject += $entity->toArray();
 
-        if ($this->attachDocumentLinks && !empty($this->relations)) {
-            $document['links'] = $this->renderLinks($entity);
+        if ($this->attachResourceObjectsLinks && !empty($this->relations)) {
+            $resourceObject['links'] = $this->renderLinks($entity);
         }
 
-        return $document;
+        return $resourceObject;
     }
 
     /**
-     * Renders resource documents links array.
+     * Renders resource links array.
      * @param EntityInterface $entity
      * @return array
      */
@@ -282,7 +282,7 @@ class Writer
     }
 
     /**
-     * Renders resource document link.
+     * Renders resource link.
      * @param string $relType
      * @param int|int[] $id
      * @param string $href
@@ -307,14 +307,14 @@ class Writer
     }
 
     /**
-     * Renders linked documents array.
+     * Renders linked resource objects array.
      * @param array $linked
      * @param EntityInterface $entity
      * @param EntityInterface[] $subEntities
      * @param Relation $relation
      * @return array
      */
-    protected function renderLinkedDocuments(array &$linked, EntityInterface $entity, array $subEntities, Relation $relation)
+    protected function renderLinkedResourceObjects(array &$linked, EntityInterface $entity, array $subEntities, Relation $relation)
     {
         foreach ($subEntities as $subEntity) {
             $id = $subEntity->getId();
@@ -323,35 +323,35 @@ class Writer
                 continue;
             }
 
-            $linked[$id] = $this->renderLinkedDocument($entity, $subEntity, $relation);
+            $linked[$id] = $this->renderLinkedResourceObject($entity, $subEntity, $relation);
         }
         return $linked;
     }
 
     /**
-     * Renders linked document.
+     * Renders linked resource object.
      * @param EntityInterface $entity
      * @param EntityInterface $subEntity
      * @param Relation $relation
      * @return array
      */
-    protected function renderLinkedDocument(EntityInterface $entity, EntityInterface $subEntity, Relation $relation)
+    protected function renderLinkedResourceObject(EntityInterface $entity, EntityInterface $subEntity, Relation $relation)
     {
-        $document = array();
-        $document['id'] = (string) $subEntity->getId();
+        $resourceObject = array();
+        $resourceObject['id'] = (string) $subEntity->getId();
 
-        if ($this->attachDocumentHref) {
+        if ($this->attachResourceObjectHref) {
             $binds = array(
                 $this->collectionName => $entity->getId(),
                 $relation->getCollectionName() => $subEntity->getId(),
             );
             $href = $this->prepareHref($relation->getHref(), $binds);
-            $document['href'] = $href;
+            $resourceObject['href'] = $href;
         }
 
-        $document += $subEntity->toArray();
+        $resourceObject += $subEntity->toArray();
 
-        return $document;
+        return $resourceObject;
     }
 
     /**
