@@ -324,7 +324,7 @@ causing
 
 or You could just switch that off (for some strange reasons):
 ```php
-$writer->setAttachDocumentLinks(false);
+$writer->attachResourceObjectsLinks(false);
 ```
 causing
 ```json
