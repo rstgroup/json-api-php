@@ -459,6 +459,34 @@ And, as we can see, the top-level `linked` field contains entities with data of 
 ```
 
 ## Url Templates
+Url temlates can be used to to formulate URLs for resources according to their type. You can add Your Url template like this:
+
+```php
+$authorTemplate = new Template('posts.author', '/authors/{posts.author.id}', 'authors');
+$postsResource->addTemplate($authorTemplate);
+```
+
+```json
+{
+    "links": {
+        "posts.author": "/authors/{posts.author.id}"
+    },
+    "posts": [
+        {
+            "id": "1",
+            "href": "/posts/1",
+            "text": "first post",
+            "links": {
+                "author": {
+                    "id": "111",
+                    "href": "/authors/111",
+                    "type": "authors"
+                }
+            }
+        },
+...
+}
+```
 
 # Writer
 
