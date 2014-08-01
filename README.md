@@ -488,7 +488,5 @@ $postsResource->addTemplate($authorTemplate);
 }
 ```
 
-# Writer
-
 # TODO's
 * support for 'meta'.
