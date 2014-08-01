@@ -459,7 +459,7 @@ And, as we can see, the top-level `linked` field contains entities with data of 
 ```
 
 ## Url Templates
-Url temlates can be used to to formulate URLs for resources according to their type. You can add Your Url template like this:
+Url templates can be used to to formulate URLs for resources according to their type. You can add Your Url template like this:
 
 ```php
 $authorTemplate = new Template('posts.author', '/authors/{posts.author.id}', 'authors');
