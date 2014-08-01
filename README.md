@@ -1,13 +1,8 @@
-json-api-php
-============
-
-PHP library for creating json-api standard responses. For more details about standard please see details at http://jsonapi.org.
+# json-api-php
+It's a lightweight PHP library for creating json-api standard responses. If you want to know more about the json-api standard, please see the details at http://jsonapi.org.
 
 # About this doc
 This document is not finished yet, it's only a draft for now. 
-
-# What is json-api-php 
-It's a light PHP library for creating json-api standard responses. If You want to know more about json-api standard, please see details at http://jsonapi.org.
 
 # Usage
 
@@ -53,13 +48,12 @@ echo json_encode($writer->write($postsResource));
 ```
 
 ## Introduction
-As example we take two resources: "authors" and "posts".
-Author creates posts, so an author can have many posts, but every single post will be related with only one author.<br/>
+As an example we take two resources: "authors" and "posts". Author creates posts; he can have many posts, but every single post is related to only one author.
 
-The first thing that we should do is to define our resources.
+The first thing that we should do is define our resources.
 
 ## Defining resources
-Your every single resource class should extends library `Resource` class ;), but if You want to, You may just use `Resource` class without creating nothing new at all. For example:
+Every single resource class should extend the (surprise!) `Resource` class. However, you don't need to inherit from the `Resource` class if you don't want to. For example:
 
 ```php
 <?php
@@ -82,26 +76,26 @@ $postsResource->setName('post');
 $postsResource->setHref('/posts/{posts.id}');
 ```
 
-So every resource should have defined three properties:
-* name
+As you can see, every resource requires these three properties to be defined:
 * collection name
+* name
 * href
 
-First two of them are used by `Writer` for naming conventions specified in the standard documentation, last one is used to for preparing full link to concrete resource. `Name` stands for name of single entity. `Collection name` stands for plural name of resource entities, while `href` should contain template url for single resource entity. 
+The first two of them are used by the `Writer` class in order to apply naming conventions specified by the standard. "href" is used to prepare full link to a particular resource. `Name` stands for name of a single entity. `Collection name` stands for plural name of resource entities, while `href` should contain url template for a single resource entity.
 
-Ok, now we know what kind of resources we have, what are their names, collection names, and links. You may have noticed that links are set as templates with placeholders, e.g. `{authors.id}`. A properly prepared placeholders are used by `Writer` to determine what value should be replaced with it (and for few other things too). It will be helpful with more complex links, for example `/authors/{authors.id}/posts/{posts.id}`. 
+Ok, now we know what kind of resources we have, what are their names, collection names, and links. You may have noticed that links are set as templates with placeholders, e.g. `{authors.id}`. Properly prepared placeholders are used by `Writer` to determine which parts should be replaced with values (and for a few other things, too). It will be helpful with more complex links, for example: `/authors/{authors.id}/posts/{posts.id}`.
 
->It's important to know that placeholder **MUST** have form like this:
+>It's important to know that a placeholder **MUST** have a form like this:
 >{_RESOURCE_COLLECTION_NAME_.id}
 
 
 Now it's time for entities.
 
 ## Defining entities
-The very first entity we would like to create is `Author`. As You can see below, `Author` class implements `EntityInterface`. It means that it should implement two methods: `getId()` and `toArray()`.<br/>
-Method `getId()` returns id of concrete entity and it's used at every place in library where that id should be known.<br/>
+The very first entity we would like to create is `Author`. As you can see below, the `Author` class implements `EntityInterface`. It means that two methods should be implemented: `getId()` and `toArray()`.  
+`getId()` returns id of a particular entity and it's used in every place in the library where that id should be known.
 
-Method `toArray()` should return the properties of an `Author` class, that are considered as resource fields in response representation. In our `Author` class it will be `firstName` and `lastName`, as `id` will be added automatically.
+`toArray()` should return those properties of an `Author` class that are considered resource fields in the response representation. In the `Author` class these will be `firstName` and `lastName`, as `id` will be added automatically.
 
 ```php
 class Author implements EntityInterface
@@ -158,7 +152,7 @@ class Post implements EntityInterface
 }
 ```
 
-At this moment we are ready to prepare our first json-api standard result:
+Now we're ready to prepare our first json-api standard result:
 
 ```php
 ...
@@ -190,12 +184,12 @@ And the result looks like this:
     }
 ]}
 ```
-So, we have authors list that could be achieved via, for example `http://api.example.com/authors` link, but what about related resources like `posts`? Well, for that we need to define resource relations.
+So, we have an authors list that could be achieved via, for example `http://api.example.com/authors` link, but what about related resources like `posts`? Well, for that we need to define resource relations.
 
 
 ## Adding resource relations 
 ### One-to-one
-As it was said earlier, every single post can have relation to one author. Lets say that we have two posts added by the same author. For that we need to change a little our `Post` class:
+As it was said earlier, every single post can have a relation to just one author. Let's say that we have two posts, added by the same author. For that we need to modify the `Post` class a little:
 
 ```php
 class Post implements EntityInterface
@@ -228,9 +222,9 @@ class Post implements EntityInterface
    ...
 }
 ```
-All that we have done here was adding `$author` property and its setter and getter methods. Author should be instance od `Author` entity. 
+What we've just done here was adding the `$author` property and its setter and getter methods. Author should be an instance of the `Author` entity.
 
->Hint: we **DO NOT** add our `$author` property to the list of entity fields returned via `toArray()` method, cause `$author` has only one goal: to hold data of author related with the post.
+>Hint: we **DID NOT** add our `$author` property to the list of entity fields returned by the `toArray()` method, because `$author` has only one purpose: to hold data of author related to the post.
 
 ```php
 ...
@@ -245,12 +239,12 @@ $post2->setAuthor($author1);
 $postsResource->setEntities(array($post1, $post2));
 ```
 
-Setter is not as important as getter - we could use constructor for that as well - but getter method in this case **MUST be named exactly** `getAuthor()`. Why? Because `Writer` will automatically determine name of needed getter method based on:
+Setter is not as important as getter---we could use constructor for that as well---but getter method in this case **MUST be named exactly** `getAuthor()`. Why? Because `Writer` will automatically determine the name of a needed getter method based on:
 
 * relation type (one-to-one/one-to-many)
 * resource name/collection name (here: author/authors)
 
-In our case one post is related with one author, so relation type is `one-to-one`, as such resource name "author" will be used as a name of the getter method. In case of `one-to-many` relation type, like author having many posts, collection name ("posts") of post resource will be used, so name of getter method would be `getPosts()` in `Author` entity class.
+In our case one post is related to one author, so the relation type is `one-to-one`. Therefore, the "author" resource name will be used as the name of the getter method. In case of a `one-to-many` relation (like author having many posts), collection name ("posts") of the `Post` resource will be used. Because of that, `getPosts()` from the `Author` entity class will serve as the getter method.
 
 Anyway, we create relation between post and its author like this:
 ``` php
@@ -293,13 +287,13 @@ And the result is:
 ]}
 ```
 
-As You can see there are new fields in result: `links` in every post entity.<br/>
-Field `links` contains short info about author related with concrete post. It could be returned in two (three for one-to-many relation type) forms: as id only, and as an object (by default). You could change that by:
+As you can see, new fields called `links` were added to the result in case of every post entity.  
+Field `links` contains short info about author related to a particular post. It could be returned in two (three for one-to-many relation type) forms: either as an id or as an object. The latter takes place by default, in order to change this behaviour you need to call:
 
 ```php
 $writer->setLinkForm(Writer::AS_ID);
 ```
-causing
+The result will be:
 ```json
 {"posts": [
     {
@@ -322,11 +316,11 @@ causing
 ...
 ```
 
-or You could just switch that off (for some strange reasons):
+Or you could just---for some strange reasons---switch that off:
 ```php
 $writer->attachResourceObjectsLinks(false);
 ```
-causing
+The result will be:
 ```json
 {"posts": [
     {
@@ -344,7 +338,7 @@ causing
 ```
 
 ### One-to-many
-For now we know how to define `one-to-one` relation (post has author), but what about `one-to-many` relation type (author has posts)? This is how we do it with `Author` class...
+For now we know how to define a `one-to-one` relation (post has an author), but what about `one-to-many` relation (author has posts)? This is how it should be done in case of the `Author` class:
 ```php
 class Author implements EntityInterface
 {
@@ -390,7 +384,7 @@ $writer = new Writer();
 echo json_encode($writer->write($authorsResource));
 ```
 
-So result looks like:
+So the result looks like this:
 
 ```json
 {"authors": [
@@ -411,22 +405,22 @@ So result looks like:
 ```
 
 ## Embedding related resources data
-As mentioned in previous section, adding relation to resource causes the appearance of new `links` field in every entity on list. But, If You want to have embeded data of related resource in response representation You should fill up entity object with proper values, and turn on attaching `linked` objects to representation, cause it is disabled by default.
+As mentioned in the previous section, adding relation to a resource causes the `links` field to appear in every entity. However, if you want data on related resource to be embedded in response representation, you should fill entity object up with proper values, and turn on attaching `linked` objects to representation, because it's disabled by default.
 
-In our case filling up is already done as we've set all properties earlier via constructor:
+In our case filling up is already done as we've set all the properties earlier via constructor:
 ```php
 $author1 = new Author(10, 'John', 'Doe');
 ...
 $post1 = new Post(1, 'first post');
 $post2 = new Post(2, 'second awesome post');
 ```
-So only one thing left to do:
+So there's only one thing left to do:
 
 ```php
 $writer->setAttachLinked(true);
 ```
 
-And, as we can see, the top-level `linked` field contains entities with data of resources related with author resource:
+As we can see, the top-level `linked` field contains entities with data on resources related to the author resource:
 ```json
 {"authors": [
     {
@@ -458,8 +452,8 @@ And, as we can see, the top-level `linked` field contains entities with data of 
 }}
 ```
 
-## Url Templates
-Url templates can be used to to formulate URLs for resources according to their type. You can add Your Url template like this:
+## Url templates
+Url templates can be used to describe URL format for resources according to their type. You can add your url templates like this:
 
 ```php
 $authorTemplate = new Template('posts.author', '/authors/{posts.author.id}', 'authors');
@@ -490,5 +484,6 @@ $postsResource->addTemplate($authorTemplate);
 
 # Writer
 
-# TODO's
-* support for 'meta'.
+# TODO
+* support for 'meta'
+
