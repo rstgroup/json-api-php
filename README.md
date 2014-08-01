@@ -4,9 +4,6 @@ It's a lightweight PHP library for creating json-api standard responses. If you 
 # About this doc
 This document is not finished yet, it's only a draft for now. 
 
-# What is json-api-php 
-It's a lightweight PHP library for creating json-api standard responses. If you want to know more about the json-api standard, please see the details at http://jsonapi.org.
-
 # Usage
 
 ## Quick example
