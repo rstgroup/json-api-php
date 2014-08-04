@@ -13,4 +13,4 @@ php:
   # aliased to a recent 5.6.x version
   - 5.6
 
-script: phpunit --coverage-text
+script: phpunit --configuration tests/phpunit.xml --coverage-text
