@@ -5,8 +5,7 @@
         </testsuite>
     </testsuites>
 
-    <!--<logging>-->
-        <!--<log type="coverage-html" target="../../../unit_coverage" charset="UTF-8" yui="true" highlight="false" />-->
-    <!--</logging>-->
-
+    <logging>
+        <log type="coverage-clover" target="build/logs/clover.xml"/>
+    </logging>
 </phpunit>
