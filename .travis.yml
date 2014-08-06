@@ -13,11 +13,11 @@ php:
   # aliased to a recent 5.6.x version
   - 5.6
 
-before_script:
+install:
   - composer install
 
 script: phpunit --coverage-text
 
 after_script:
-  - CODECLIMATE_REPO_TOKEN=2e729942226b7bc3320f7190664bfacc303fba1103a06550666a938dc76b753a  php ./vendor/bin/test-reporter > codeclimate.json
-  - curl -X POST -d @codeclimate.json -H 'Content-Type:application/json' -H 'User-Agent:Code Climate (PHP Test Reporter v0.1.1)' https://codeclimate.com/test_reports
+  - CODECLIMATE_REPO_TOKEN=2e729942226b7bc3320f7190664bfacc303fba1103a06550666a938dc76b753a vendor/bin/test-reporter --stdout > codeclimate.json
+  - "curl --verbose -X POST -d @codeclimate.json -H 'Content-Type: application/json' -H 'User-Agent: Code Climate (PHP Test Reporter v0.1.1)' https://codeclimate.com/test_reports"
