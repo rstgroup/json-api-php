@@ -1,6 +1,9 @@
 json-api-php
 ============
-[![Build Status](https://travis-ci.org/rstgroup/json-api-php.svg?branch=master)](https://travis-ci.org/rstgroup/json-api-php) [![Made with passion - RST Group](https://s3-eu-west-1.amazonaws.com/uploads-eu.hipchat.com/84440/610454/wsIVrnw2yOvgyfI/withpassion.png)](https://github.com/rstgroup)
+[![Made with passion - RST Group](https://s3-eu-west-1.amazonaws.com/uploads-eu.hipchat.com/84440/610454/wsIVrnw2yOvgyfI/withpassion.png)](https://github.com/rstgroup)
+[![Code Climate](https://codeclimate.com/github/rstgroup/json-api-php/badges/gpa.svg)](https://codeclimate.com/github/rstgroup/json-api-php)
+[![Build Status](https://travis-ci.org/rstgroup/json-api-php.svg?branch=master)](https://travis-ci.org/rstgroup/json-api-php) 
+[![Test Coverage](https://codeclimate.com/github/rstgroup/json-api-php/badges/coverage.svg)](https://codeclimate.com/github/rstgroup/json-api-php)
 
 
 It's a lightweight PHP library for creating json-api standard responses. If you want to know more about the json-api standard, please see the details at http://jsonapi.org.
