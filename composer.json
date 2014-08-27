@@ -2,7 +2,6 @@
     "name": "rstgroup/json-api-php",
     "description": "A PHP library for creating json-api standard responses (see: http://jsonapi.org)",
     "license": "MIT",
-    "version" : "1.0.0",
     "minimum-stability" : "stable",
     "authors": [
         {
@@ -15,7 +14,11 @@
     },
     "autoload" : {
         "psr-0" : {
-            "RstGroup\\" : "src/",
+            "RstGroup\\JsonApiPhp\\" : "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-0" : {
             "RstGroup\\JsonApiPhp\\Tests" : "tests/"
         }
     },
